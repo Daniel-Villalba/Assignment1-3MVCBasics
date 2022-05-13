@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewData["Title"] = "GuessingGame";
+}
+
+<h1>Guessing Game</h1>
+
+@if(ViewBag.Message != null)
+{
+    <p>@ViewBag.Message</p>
+}
+
+<form asp-controller="GuessingGame" asp-action="GuessingGame" method="post">
+    <label>Your guess:</label>
+    <input type="number" name="guessedNumber" />
+    <input type="submit" value="Send input" />
+
+</form>
+
