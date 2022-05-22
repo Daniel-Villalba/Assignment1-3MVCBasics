@@ -12,9 +12,9 @@ namespace MVCBasics.Models
 
         public static List<Person> AllPersons = new List<Person>
         {
-                new Person { PersonId = 1, Name = "Adam Andersson", PhoneNumber = "031445511", City = "Trollhättan" },
-                new Person { PersonId = 2, Name = "Bengt Bengtsson", PhoneNumber = "031548422", City = "Göteborg" },
-                new Person { PersonId = 3, Name = "Erik Eriksson", PhoneNumber = "031443433", City = "Stockholm" }
+                new Person { PersonId = 0, Name = "Adam Andersson", PhoneNumber = "031445511", City = "Trollhättan" },
+                new Person { PersonId = 1, Name = "Bengt Bengtsson", PhoneNumber = "031548422", City = "Göteborg" },
+                new Person { PersonId = 2, Name = "Erik Eriksson", PhoneNumber = "031443433", City = "Stockholm" }
         };
 
         public static List<Person> byNameList = new List<Person>();
