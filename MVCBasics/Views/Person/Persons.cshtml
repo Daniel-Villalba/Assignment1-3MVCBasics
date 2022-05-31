@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewData["Title"] = "Persons";
+}
+
+@model MVCBasics.ViewModels.PeopleViewModel
+@using MVCBasics.ViewModels
+
+<h1>People Index</h1>
+
+<form asp-action="Persons" method="post">
+    <label>Search for name or city</label>
+    <div>
+        <input type="text" name="searchedName" />
+    </div>
+    <br />
+    <input type="submit" name="Search" value="Search" />
+</form>
+<br />
+@{ CreatePersonViewModel createPersonViewModel = new CreatePersonViewModel();}
+
+<form asp-action="Persons" method="post">
+
+    <label asp-for="@createPersonViewModel.PersonName"></label>
+    <div>
+        <input type="text" asp-for="@createPersonViewModel.PersonName" />
+    </div>
+    <span asp-validation-for="@createPersonViewModel.PersonName"></span>
+    <label asp-for="@createPersonViewModel.Phone"></label>
+    <div>
+        <input type="text" asp-for="@createPersonViewModel.Phone" />
+    </div>
+    <span asp-validation-for="@createPersonViewModel.Phone"></span>
+    <label asp-for="@createPersonViewModel.City"></label>
+    <div>
+        <input type="text" asp-for="@createPersonViewModel.City" />
+    </div>
+    <span asp-validation-for="@createPersonViewModel.City"></span>
+    <br />
+    <div>
+        <input type="submit" name="Create" value="Create" />
+    </div>
+</form>
+<br />
+
+    @if (Model.AllPersonsList != null)
+    {
+        @foreach (var person in Model.AllPersonsList)
+        {
+            <partial name="_PersonsPartialView" model="person" />
+        }
+    }
+    else
+    {
+        @foreach (var person in Model.AllPersonsWithSpecificName)
+        {
+            <partial name="_PersonsPartialView" model="person" />
+        }
+    }
