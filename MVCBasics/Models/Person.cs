@@ -1,21 +1,37 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using MVCBasics.Data;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace MVCBasics.Models
 {
     public class Person
     {
+        [Key]
         public int PersonId { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string PhoneNumber { get; set; }
+        [Required]
         public string City { get; set; }
 
-        public static List<Person> AllPersons = new List<Person>
+        public Person(string name, string phoneNumber, string city)
         {
-                new Person { PersonId = 0, Name = "Adam Andersson", PhoneNumber = "031445511", City = "Trollhättan" },
-                new Person { PersonId = 1, Name = "Bengt Bengtsson", PhoneNumber = "031548422", City = "Göteborg" },
-                new Person { PersonId = 2, Name = "Erik Eriksson", PhoneNumber = "031443433", City = "Stockholm" }
-        };
+            this.Name = name;
+            this.PhoneNumber = phoneNumber;
+            this.City = city;   
+        }
+        public Person()
+        {
+
+        }
+
+        public static List<Person> AllPersons = new List<Person>();
+        
+       
 
         public static List<Person> byNameList = new List<Person>();
 
@@ -24,11 +40,11 @@ namespace MVCBasics.Models
             return ++id;
         }
 
-        public static void ReturnByNameOrCity(string name)
+        public static void ReturnByNameOrCity(string name, ApplicationDbContext db)
         {
             byNameList.Clear();
 
-            foreach (Person personWithName in AllPersons)
+            foreach (Person personWithName in db.People.ToList())
             {
                 if (personWithName.Name.Contains(name, StringComparison.OrdinalIgnoreCase) || personWithName.City.Contains(name, StringComparison.OrdinalIgnoreCase))
                 {
@@ -39,13 +55,14 @@ namespace MVCBasics.Models
             }
         }
 
-        public static void DeletePerson(int id)
+        public static void DeletePerson(int id, ApplicationDbContext db)
         {
-            foreach (Person person in AllPersons)
+            foreach (Person person in db.People.ToList())
             {
                 if (person.PersonId == id)
                 {
-                    AllPersons.Remove(person);
+                    db.People.Remove(person);
+                    db.SaveChanges();
                     break;
                 }
             }

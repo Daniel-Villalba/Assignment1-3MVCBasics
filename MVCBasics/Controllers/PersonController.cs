@@ -1,21 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MVCBasics.Data;
 using MVCBasics.Models;
 using MVCBasics.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MVCBasics.Controllers
 {
     public class PersonController : Controller
     {
-        public IActionResult Index()
+        private static PeopleViewModel peopleViewModel;
+        private readonly ApplicationDbContext _context;
+        public PersonController(ApplicationDbContext context)
+        {
+            _context = context;
+
+            if(peopleViewModel == null)
+            {
+                peopleViewModel = new PeopleViewModel();
+                peopleViewModel.AllPersonsList = _context.People.ToList();
+            }
+        }
+        /*public IActionResult Index()
         {
             return View();
-        }
+        } */
         public IActionResult Persons()
         {
-            PeopleViewModel peopleViewModel = new PeopleViewModel();
-            peopleViewModel.AllPersonsList = Person.AllPersons;
+            peopleViewModel = new PeopleViewModel();
+            peopleViewModel.AllPersonsList = _context.People.ToList();
 
             return View(peopleViewModel);
         }
@@ -26,9 +40,9 @@ namespace MVCBasics.Controllers
             if (searchedName != null)
             {
 
-                PeopleViewModel peopleViewModel = new PeopleViewModel();
+                peopleViewModel = new PeopleViewModel();
 
-                Person.ReturnByNameOrCity(searchedName);
+                Person.ReturnByNameOrCity(searchedName, _context);
 
                 peopleViewModel.AllPersonsWithSpecificName = Person.byNameList;
 
@@ -38,25 +52,27 @@ namespace MVCBasics.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    CreatePersonViewModel createPerson = new CreatePersonViewModel();
+                    createPersonViewModel.CreatePerson(_context);
+                    /*CreatePersonViewModel createPerson = new CreatePersonViewModel();
                     Person returnedPerson = createPerson.CreatePerson(createPersonViewModel.PersonName, createPersonViewModel.Phone, createPersonViewModel.City);
 
-                    Person.AllPersons.Add(returnedPerson);
+                    Person.AllPersons.Add(returnedPerson);*/
                     return RedirectToAction("Persons");
                 }
                 else
                 {
-                    PeopleViewModel peopleViewModel = new PeopleViewModel();
-                    peopleViewModel.AllPersonsList = Person.AllPersons;
+                    return RedirectToAction("Persons");
+                    /* peopleViewModel = new PeopleViewModel();
+                     peopleViewModel.AllPersonsList = Person.AllPersons;
 
-                    return View(peopleViewModel);
+                     return View(peopleViewModel);*/
                 }
             }
         }
 
         public IActionResult Delete(int id)
         {
-            Person.DeletePerson(id);
+            Person.DeletePerson(id, _context);
 
             return RedirectToAction("Persons");
         }

@@ -1,11 +1,14 @@
-﻿using MVCBasics.Models;
+﻿using MVCBasics.Data;
+using MVCBasics.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace MVCBasics.ViewModels
 {
     public class CreatePersonViewModel
     {
-        private static int tempId = 3;
+        /*Antar att detta måste ändras då det kan finnas fler poster lagrade i databasen vid nästa körning
+        av programmet*/
+        private static int tempId = 4; //Denna siffra måste vara dynamisk!
         public int Id { get; set; }
 
         [Required(ErrorMessage = "You have to assign a name.")]
@@ -36,6 +39,15 @@ namespace MVCBasics.ViewModels
             };
 
             return newPerson;
+        }
+
+        public Person CreatePerson(ApplicationDbContext db)
+        {
+            Person newPerson = new Person(PersonName, Phone, City);
+            db.People.Add(newPerson);
+            db.SaveChanges();
+        
+            return newPerson;    
         }
     }
 }
