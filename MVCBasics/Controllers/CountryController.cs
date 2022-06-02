@@ -12,12 +12,6 @@ namespace MVCBasics.Controllers
         public CountryController(ApplicationDbContext context)
         {
             _context = context;
-
-            /*if (peopleViewModel == null)
-            {
-                peopleViewModel = new PeopleViewModel();
-                peopleViewModel.AllPersonsList = _context.People.ToList();
-            }*/
         }
         public IActionResult Index()
         {

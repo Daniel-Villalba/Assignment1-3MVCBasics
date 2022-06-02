@@ -17,7 +17,7 @@ namespace MVCBasics.Models
         [Required]
         public string PhoneNumber { get; set; }
         
-        public string City { get; set; } //Ändra till City
+        public string City { get; set; } 
 
        public City PersonCity { get; set; }
         [ForeignKey("PersonCityId")]
