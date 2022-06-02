@@ -1,0 +1,18 @@
+﻿@model City
+@{
+    ViewData["Title"] = "Create City";
+}
+
+<h1>Create City</h1>
+
+<form asp-action="CreateCity" method="post">
+   <div class="form-group">
+       <label asp-for="Name">City Name</label>
+       <input asp-for="Name" />
+   </div>
+      
+    <div class="form-group">
+      <input type="submit" value="Create" class="btn btn-primary" />
+   </div>
+   
+</form>  

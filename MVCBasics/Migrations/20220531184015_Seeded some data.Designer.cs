@@ -4,14 +4,16 @@ using MVCBasics.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MVCBasics.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220531184015_Seeded some data")]
+    partial class Seededsomedata
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,28 +135,28 @@ namespace MVCBasics.Migrations
                     b.HasData(
                         new
                         {
-                            PersonId = -1,
+                            PersonId = 1,
                             Name = "Adam Andersson",
                             PersonCityId = 1,
                             PhoneNumber = "+4631445511"
                         },
                         new
                         {
-                            PersonId = -2,
+                            PersonId = 2,
                             Name = "Bengt Bengtsson",
                             PersonCityId = 1,
                             PhoneNumber = "+4631548422"
                         },
                         new
                         {
-                            PersonId = -3,
+                            PersonId = 3,
                             Name = "Cesar Cederquist",
                             PersonCityId = 4,
                             PhoneNumber = "+4731443433"
                         },
                         new
                         {
-                            PersonId = -4,
+                            PersonId = 4,
                             Name = "David Dalquist",
                             PersonCityId = 5,
                             PhoneNumber = "+47314434242"

@@ -3,6 +3,7 @@ using MVCBasics.Data;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace MVCBasics.Models
@@ -15,9 +16,27 @@ namespace MVCBasics.Models
         public string Name { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
-        [Required]
-        public string City { get; set; }
+        
+        public string City { get; set; } //Ändra till City
 
+       public City PersonCity { get; set; }
+        [ForeignKey("PersonCityId")]
+        public int? PersonCityId { get; set; }
+
+        public Person(string name, string phoneNumber, int cityId)
+        {
+            Name = name;
+            PhoneNumber = phoneNumber;
+            PersonCityId = cityId;
+        }
+
+        public Person(int id, string name, string phoneNumber, int cityId)
+        {
+            PersonId = id;
+            Name = name;
+            PhoneNumber = phoneNumber;
+            PersonCityId = cityId;
+        }
         public Person(string name, string phoneNumber, string city)
         {
             this.Name = name;
@@ -30,9 +49,6 @@ namespace MVCBasics.Models
         }
 
         public static List<Person> AllPersons = new List<Person>();
-        
-       
-
         public static List<Person> byNameList = new List<Person>();
 
         public static int NextId(int id)

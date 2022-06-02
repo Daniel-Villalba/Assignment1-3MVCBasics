@@ -1,0 +1,26 @@
+﻿@model IEnumerable<City>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<h1>Cities</h1>
+
+<a asp-action="CreateCity">Create City</a>
+
+<div>
+    @foreach (var item in Model)
+    {
+        <p>----------------------</p>
+        <p>City: @item.Name</p>
+        <p>Country: @item.Country.Name</p>
+        <ul>
+        @foreach(Person p in item.People)
+        {
+            <li>@p.Name</li>
+        }
+        </ul>
+        <a asp-action="RemoveCity" asp-route-regNumber="@item.Id">Remove City</a>
+        
+        <br />
+     }
+</div>

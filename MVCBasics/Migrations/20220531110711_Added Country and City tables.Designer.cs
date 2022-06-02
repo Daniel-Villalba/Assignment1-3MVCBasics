@@ -4,14 +4,16 @@ using MVCBasics.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MVCBasics.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220531110711_Added Country and City tables")]
+    partial class AddedCountryandCitytables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,38 +40,6 @@ namespace MVCBasics.Migrations
                     b.HasIndex("CountryId");
 
                     b.ToTable("Cities");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CountryId = 1,
-                            Name = "Gothenburg"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CountryId = 1,
-                            Name = "Stockholm"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CountryId = 1,
-                            Name = "Malmoe"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CountryId = 2,
-                            Name = "Oslo"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CountryId = 2,
-                            Name = "Bergen"
-                        });
                 });
 
             modelBuilder.Entity("MVCBasics.Models.Country", b =>
@@ -79,9 +49,6 @@ namespace MVCBasics.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CitiesId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -89,18 +56,6 @@ namespace MVCBasics.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Countries");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Sweden"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Norway"
-                        });
                 });
 
             modelBuilder.Entity("MVCBasics.Models.Person", b =>
@@ -111,14 +66,15 @@ namespace MVCBasics.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CityId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PersonCityId")
-                        .HasColumnType("int");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -126,38 +82,38 @@ namespace MVCBasics.Migrations
 
                     b.HasKey("PersonId");
 
-                    b.HasIndex("PersonCityId");
+                    b.HasIndex("CityId");
 
                     b.ToTable("People");
 
                     b.HasData(
                         new
                         {
-                            PersonId = -1,
+                            PersonId = 1,
+                            City = "Trollhättan",
                             Name = "Adam Andersson",
-                            PersonCityId = 1,
-                            PhoneNumber = "+4631445511"
+                            PhoneNumber = "031445511"
                         },
                         new
                         {
-                            PersonId = -2,
+                            PersonId = 2,
+                            City = "Göteborg",
                             Name = "Bengt Bengtsson",
-                            PersonCityId = 1,
-                            PhoneNumber = "+4631548422"
+                            PhoneNumber = "031548422"
                         },
                         new
                         {
-                            PersonId = -3,
+                            PersonId = 3,
+                            City = "Stockholm",
                             Name = "Cesar Cederquist",
-                            PersonCityId = 4,
-                            PhoneNumber = "+4731443433"
+                            PhoneNumber = "031443433"
                         },
                         new
                         {
-                            PersonId = -4,
+                            PersonId = 4,
+                            City = "Göteborg",
                             Name = "David Dalquist",
-                            PersonCityId = 5,
-                            PhoneNumber = "+47314434242"
+                            PhoneNumber = "0314434242"
                         });
                 });
 
@@ -170,9 +126,9 @@ namespace MVCBasics.Migrations
 
             modelBuilder.Entity("MVCBasics.Models.Person", b =>
                 {
-                    b.HasOne("MVCBasics.Models.City", "PersonCity")
+                    b.HasOne("MVCBasics.Models.City", null)
                         .WithMany("People")
-                        .HasForeignKey("PersonCityId");
+                        .HasForeignKey("CityId");
                 });
 #pragma warning restore 612, 618
         }
