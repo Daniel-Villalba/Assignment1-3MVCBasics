@@ -12,12 +12,6 @@ namespace MVCBasics.Controllers
         public CountryController(ApplicationDbContext context)
         {
             _context = context;
-
-            /*if (peopleViewModel == null)
-            {
-                peopleViewModel = new PeopleViewModel();
-                peopleViewModel.AllPersonsList = _context.People.ToList();
-            }*/
         }
         public IActionResult Index()
         {
@@ -39,9 +33,9 @@ namespace MVCBasics.Controllers
             }
             return View();
         }
-        public IActionResult Remove(int id)
+        public IActionResult RemoveCountry(int CountryId)
         {
-            var countryToRemove = _context.Countries.Find(id);
+            var countryToRemove = _context.Countries.Find(CountryId);
 
             _context.Countries.Remove(countryToRemove);
             _context.SaveChanges();

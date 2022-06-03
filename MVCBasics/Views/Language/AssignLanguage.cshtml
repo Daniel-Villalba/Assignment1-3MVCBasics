@@ -1,0 +1,9 @@
+﻿@{
+    ViewData["Title"] = "Assign Language";
+}
+<h1>Assign Language to Person</h1>
+<form asp-action="AssignLanguage" method="post">
+    <select name="PersonId" asp-items="ViewBag.People"></select>
+    <select name="LanguageId" asp-items="ViewBag.Languages"></select>
+    <input type="submit"/>
+</form>

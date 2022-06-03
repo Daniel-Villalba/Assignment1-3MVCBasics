@@ -3,15 +3,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MVCBasics.Models
 {
-    public class City
+    public class Language
     {
         [Key]
-        public int Id { get; set; } 
+        public int LanguageId { get; set; }
         [Required]
         public string Name { get; set; }
-        public List<Person> People { get; set; }
-        public Country Country { get; set; }
-        public int? CountryId { get; set; }
-
+        public List<PersonLanguage> PersonLanguages { get; set; }
     }
 }

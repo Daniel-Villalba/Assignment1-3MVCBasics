@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MVCBasics.Data;
 using MVCBasics.Models;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace MVCBasics.Controllers
         }
         public IActionResult CreateCity()
         {
+            ViewBag.Countries = new SelectList(_context.Countries, "Id", "Name");
             return View();
         }
         [HttpPost]
@@ -35,13 +37,15 @@ namespace MVCBasics.Controllers
             return View();
         }
 
-        public IActionResult Remove(int id)
+        public IActionResult RemoveCity(int CityId)
         {
-            var cityToRemove = _context.Cities.Find(id);
+            var cityToRemove = _context.Cities.Include("People").Where(p => p.Id == CityId).Single<City>();
 
-            _context.Cities.Remove(cityToRemove);
-            _context.SaveChanges();
-
+            if(cityToRemove != null)
+            {
+                _context.Cities.Remove(cityToRemove);
+                _context.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 

@@ -17,11 +17,17 @@ namespace MVCBasics.Models
         [Required]
         public string PhoneNumber { get; set; }
         
-        public string City { get; set; } //Ändra till City
+        public string City { get; set; } 
+        
 
        public City PersonCity { get; set; }
         [ForeignKey("PersonCityId")]
         public int? PersonCityId { get; set; }
+
+        public List<Language> Languages { get; set; }
+
+        public List<PersonLanguage> PersonLanguages { get; set; }
+
 
         public Person(string name, string phoneNumber, int cityId)
         {

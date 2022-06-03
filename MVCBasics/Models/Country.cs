@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVCBasics.Models
 {
-    public class Country //Person cinema
+    public class Country 
     {
         
 

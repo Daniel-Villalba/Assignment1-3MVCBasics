@@ -4,14 +4,16 @@ using MVCBasics.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MVCBasics.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220603105641_Added Db sets - Language and PersonLanguage, and connections between these and person")]
+    partial class AddedDbsetsLanguageandPersonLanguageandconnectionsbetweentheseandperson
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,26 +116,9 @@ namespace MVCBasics.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PersonId")
-                        .HasColumnType("int");
-
                     b.HasKey("LanguageId");
 
-                    b.HasIndex("PersonId");
-
                     b.ToTable("Languages");
-
-                    b.HasData(
-                        new
-                        {
-                            LanguageId = -1,
-                            Name = "Swedish"
-                        },
-                        new
-                        {
-                            LanguageId = -2,
-                            Name = "Norwegian"
-                        });
                 });
 
             modelBuilder.Entity("MVCBasics.Models.Person", b =>
@@ -207,61 +192,20 @@ namespace MVCBasics.Migrations
                     b.HasIndex("LanguageId");
 
                     b.ToTable("PersonLanguages");
-
-                    b.HasData(
-                        new
-                        {
-                            PersonId = -1,
-                            LanguageId = -1
-                        },
-                        new
-                        {
-                            PersonId = -2,
-                            LanguageId = -1
-                        },
-                        new
-                        {
-                            PersonId = -3,
-                            LanguageId = -1
-                        },
-                        new
-                        {
-                            PersonId = -1,
-                            LanguageId = -2
-                        },
-                        new
-                        {
-                            PersonId = -3,
-                            LanguageId = -2
-                        },
-                        new
-                        {
-                            PersonId = -4,
-                            LanguageId = -2
-                        });
                 });
 
             modelBuilder.Entity("MVCBasics.Models.City", b =>
                 {
                     b.HasOne("MVCBasics.Models.Country", "Country")
                         .WithMany("Cities")
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MVCBasics.Models.Language", b =>
-                {
-                    b.HasOne("MVCBasics.Models.Person", null)
-                        .WithMany("Languages")
-                        .HasForeignKey("PersonId");
+                        .HasForeignKey("CountryId");
                 });
 
             modelBuilder.Entity("MVCBasics.Models.Person", b =>
                 {
                     b.HasOne("MVCBasics.Models.City", "PersonCity")
                         .WithMany("People")
-                        .HasForeignKey("PersonCityId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("PersonCityId");
                 });
 
             modelBuilder.Entity("MVCBasics.Models.PersonLanguage", b =>

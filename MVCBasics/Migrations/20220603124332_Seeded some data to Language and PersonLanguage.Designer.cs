@@ -4,14 +4,16 @@ using MVCBasics.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MVCBasics.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220603124332_Seeded some data to Language and PersonLanguage")]
+    partial class SeededsomedatatoLanguageandPersonLanguage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -245,8 +247,7 @@ namespace MVCBasics.Migrations
                 {
                     b.HasOne("MVCBasics.Models.Country", "Country")
                         .WithMany("Cities")
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CountryId");
                 });
 
             modelBuilder.Entity("MVCBasics.Models.Language", b =>
@@ -260,8 +261,7 @@ namespace MVCBasics.Migrations
                 {
                     b.HasOne("MVCBasics.Models.City", "PersonCity")
                         .WithMany("People")
-                        .HasForeignKey("PersonCityId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("PersonCityId");
                 });
 
             modelBuilder.Entity("MVCBasics.Models.PersonLanguage", b =>

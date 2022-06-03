@@ -1,0 +1,23 @@
+﻿@using MVCBasics.Models
+@{
+    ViewData["Title"] = "Index";
+}
+<h1>Language</h1>
+
+<a asp-action="CreateLanguage">Create Language</a>
+<hr />
+<a asp-action="AssignLanguage">Assign Language</a>
+<hr />
+<div>
+    @foreach(Language item in Model) {
+        <p>@item.Name</p>
+        <p>People: </p>
+        <ul>
+            @foreach(var p in item.PersonLanguages) {
+                <li>@p.Person.Name</li>
+            }
+        </ul>
+        <a asp-action="RemoveLanguage" asp-route-languageId="@item.LanguageId">Delete Language</a>  
+        <hr />
+    }
+</div>
