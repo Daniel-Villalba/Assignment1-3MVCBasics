@@ -6,10 +6,6 @@ namespace MVCBasics.ViewModels
 {
     public class CreatePersonViewModel
     {
-        /*Antar att detta måste ändras då det kan finnas fler poster lagrade i databasen vid nästa körning
-        av programmet*/
-        private static int tempId = 4; //Denna siffra måste vara dynamisk!
-        public int Id { get; set; }
 
         [Required(ErrorMessage = "You have to assign a name.")]
         [Display(Name = "Name")]
@@ -20,24 +16,18 @@ namespace MVCBasics.ViewModels
         [Display(Name = "Phonenumber")]
         public string Phone { get; set; }
 
-
-
-        [Required(ErrorMessage = "You have to assign a city.")]
-        [Display(Name = "City")]
+        
         public string City { get; set; }
+        [Required]
+        public int personCityId { get; set; }
 
-        public Person CreatePerson(string name, string phone, string city)
+        public Person CreatePerson(ApplicationDbContext db, int cityId)
         {
-            tempId = Person.NextId(tempId);
-
-            Person newPerson = new Person()
-            {
-                PersonId = tempId,
-                Name = name,
-                PhoneNumber = phone,
-                City = city
-            };
-
+            Person newPerson = new Person(PersonName, Phone, cityId);
+            db.People.Add(newPerson);
+            db.SaveChanges();
+            
+     
             return newPerson;
         }
 

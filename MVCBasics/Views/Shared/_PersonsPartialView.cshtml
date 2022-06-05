@@ -1,13 +1,23 @@
 ﻿@model Person
+
 @using MVCBasics.Models
 
 <div class="container">
     <div class="row">
 
-        <div class="col-sm">@Model.PersonId</div>
+        <hr />
         <div class="col-sm">@Model.Name</div>
         <div class="col-sm">@Model.PhoneNumber</div>
-        <div class="col-sm">@Model.City</div>
+        <div class="col-sm">@Model.PersonCity.Name</div>
+        <p>Languages: </p>
+        <ul>
+            @foreach (var item in Model.PersonLanguages)
+           {
+               <li>@item.Language.Name</li>
+           }
+        </ul>
+           
+        
         <div class="col-sm"><a asp-controller="Person" asp-action="Delete" asp-route-id="@Model.PersonId">Ta bort</a></div>
         <div></div>
 

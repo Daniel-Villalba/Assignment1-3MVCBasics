@@ -31,11 +31,10 @@
         <input type="text" asp-for="@createPersonViewModel.Phone" />
     </div>
     <span asp-validation-for="@createPersonViewModel.Phone"></span>
-    <label asp-for="@createPersonViewModel.City"></label>
+    <label>City</label>
     <div>
-        <input type="text" asp-for="@createPersonViewModel.City" />
+        <select name="CityId" asp-items="ViewBag.Cities"></select>
     </div>
-    <span asp-validation-for="@createPersonViewModel.City"></span>
     <br />
     <div>
         <input type="submit" name="Create" value="Create" />

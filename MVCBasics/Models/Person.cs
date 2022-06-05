@@ -22,12 +22,11 @@ namespace MVCBasics.Models
 
        public City PersonCity { get; set; }
         [ForeignKey("PersonCityId")]
-        public int? PersonCityId { get; set; }
+        public int PersonCityId { get; set; }
 
         public List<Language> Languages { get; set; }
 
         public List<PersonLanguage> PersonLanguages { get; set; }
-
 
         public Person(string name, string phoneNumber, int cityId)
         {
@@ -66,14 +65,12 @@ namespace MVCBasics.Models
         {
             byNameList.Clear();
 
-            foreach (Person personWithName in db.People.ToList())
+            foreach (Person personWithName in db.People.Include("PersonCity").ToList())
             {
-                if (personWithName.Name.Contains(name, StringComparison.OrdinalIgnoreCase) || personWithName.City.Contains(name, StringComparison.OrdinalIgnoreCase))
+                if (personWithName.Name.Contains(name, StringComparison.OrdinalIgnoreCase) || personWithName.PersonCity.Name.Contains(name, StringComparison.OrdinalIgnoreCase))
                 {
                     byNameList.Add(personWithName);
                 }
-
-         
             }
         }
 

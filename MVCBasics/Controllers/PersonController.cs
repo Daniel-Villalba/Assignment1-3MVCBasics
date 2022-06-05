@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using MVCBasics.Data;
 using MVCBasics.Models;
 using MVCBasics.ViewModels;
@@ -22,20 +24,17 @@ namespace MVCBasics.Controllers
                 peopleViewModel.AllPersonsList = _context.People.ToList();
             }
         }
-        /*public IActionResult Index()
-        {
-            return View();
-        } */
         public IActionResult Persons()
         {
             peopleViewModel = new PeopleViewModel();
-            peopleViewModel.AllPersonsList = _context.People.ToList();
+            peopleViewModel.AllPersonsList = _context.People.Include("PersonLanguages.Language").ToList();
+            ViewBag.Cities = new SelectList(_context.Cities, "Id", "Name");
 
             return View(peopleViewModel);
         }
 
         [HttpPost]
-        public IActionResult Persons(CreatePersonViewModel createPersonViewModel, string searchedName)
+        public IActionResult Persons(CreatePersonViewModel createPersonViewModel, string searchedName, int CityId)
         {
             if (searchedName != null)
             {
@@ -46,26 +45,22 @@ namespace MVCBasics.Controllers
 
                 peopleViewModel.AllPersonsWithSpecificName = Person.byNameList;
 
+                ViewBag.Cities = new SelectList(_context.Cities, "Id", "Name");
+
                 return View(peopleViewModel);
             }
             else
             {
                 if (ModelState.IsValid)
                 {
-                    createPersonViewModel.CreatePerson(_context);
-                    /*CreatePersonViewModel createPerson = new CreatePersonViewModel();
-                    Person returnedPerson = createPerson.CreatePerson(createPersonViewModel.PersonName, createPersonViewModel.Phone, createPersonViewModel.City);
-
-                    Person.AllPersons.Add(returnedPerson);*/
+                    createPersonViewModel.CreatePerson(_context, CityId);
+                   
                     return RedirectToAction("Persons");
                 }
                 else
                 {
                     return RedirectToAction("Persons");
-                    /* peopleViewModel = new PeopleViewModel();
-                     peopleViewModel.AllPersonsList = Person.AllPersons;
-
-                     return View(peopleViewModel);*/
+                    
                 }
             }
         }
