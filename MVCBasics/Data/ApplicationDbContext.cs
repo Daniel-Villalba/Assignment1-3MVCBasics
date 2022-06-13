@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MVCBasics.Models;
 using System;
 using System.Collections.Generic;
@@ -6,7 +8,7 @@ using System.IO;
 
 namespace MVCBasics.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -17,8 +19,11 @@ namespace MVCBasics.Data
         public DbSet<City> Cities { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<PersonLanguage> PersonLanguages { get; set; }
+        public DbSet<ApplicationUser> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Country>().HasData(
                 new Country() { Id = 1, Name = "Sweden" },
                 new Country() { Id = 2, Name = "Norway" }
@@ -83,6 +88,39 @@ namespace MVCBasics.Data
                 .HasOne(pl => pl.Language)
                 .WithMany(pl => pl.PersonLanguages)
                 .HasForeignKey(pl => pl.LanguageId);
+
+            string adminRoleId = Guid.NewGuid().ToString();
+            string StandardRoleId = Guid.NewGuid().ToString();
+            string userId = Guid.NewGuid().ToString();
+
+            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole {
+                Id = adminRoleId,
+                Name = AccountTypes.Administrator,
+                NormalizedName = AccountTypes.AdministratorNormalized });
+
+            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole { 
+                Id = StandardRoleId,
+                Name = AccountTypes.Standard,
+                NormalizedName = AccountTypes.StandardNormalized });
+
+            PasswordHasher<ApplicationUser> hasher = new PasswordHasher<ApplicationUser>();
+
+            modelBuilder.Entity<ApplicationUser>().HasData(new ApplicationUser
+            {
+                Id = userId,
+                Email = "admin@admin.com",
+                NormalizedEmail = "ADMIN@ADMIN.COM",
+                UserName = "admin@admin.com",
+                NormalizedUserName = "ADMIN@ADMIN.COM",
+                PasswordHash = hasher.HashPassword(null, "password")
+
+            });
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
+            {
+                RoleId = adminRoleId,
+                UserId = userId
+            });
 
         }
     }

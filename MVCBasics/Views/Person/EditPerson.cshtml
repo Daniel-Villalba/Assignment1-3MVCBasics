@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewData["Title"] = "EditPerson";
+}
+@model Person
+<h1>Edit Person</h1>
+
+<form action="EditPerson" method="post">
+    <input asp-for="PersonId" type="number" value="@Model.PersonId" hidden/>
+
+
+    <div class="form-element">
+        <label>Name: </label>
+        <input asp-for="Name" type="text" value="@Model.Name"/>
+    
+    </div>
+    <div class="form-element">
+        <label>City: </label>
+        <select asp-for="PersonCityId" asp-items="@ViewBag.Cities" value="@Model.PersonCityId"></select>
+    </div>
+    <div class="form-element">
+        <label>Phone Number: </label>
+        <input type="number" step="1" asp-for="PhoneNumber"/>
+    </div>
+    
+    <input type="submit" />
+</form>

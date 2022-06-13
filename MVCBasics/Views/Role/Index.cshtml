@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+@{
+    ViewData["Title"] = "Index";
+
+}
+
+<h1>Roles</h1>
+
+<a asp-action="CreateRole">Create role</a>
+||
+<a asp-action="AddUserToRole">Add user to a role</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Id</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Id</td>
+            </tr>
+        }
+    </tbody>
+
+</table>

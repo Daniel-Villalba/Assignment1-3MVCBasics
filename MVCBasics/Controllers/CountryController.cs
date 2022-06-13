@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVCBasics.Data;
 using MVCBasics.Models;
@@ -6,6 +7,7 @@ using System.Linq;
 
 namespace MVCBasics.Controllers
 {
+    [Authorize(Roles = AccountTypes.Administrator)]
     public class CountryController : Controller
     {
         private readonly ApplicationDbContext _context;

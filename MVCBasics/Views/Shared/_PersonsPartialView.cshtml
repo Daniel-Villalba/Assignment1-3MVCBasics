@@ -13,13 +13,20 @@
         <ul>
             @foreach (var item in Model.PersonLanguages)
            {
-               <li>@item.Language.Name</li>
+               <li>@item.Language.Name <a asp-controller="Language" asp-action="Unassign" asp-route-personId="@item.PersonId" asp-route-languageId="@item.LanguageId"> Unassign Language</a></li>
            }
         </ul>
-           
         
-        <div class="col-sm"><a asp-controller="Person" asp-action="Delete" asp-route-id="@Model.PersonId">Ta bort</a></div>
+                    <div class="object-actions">
+                    <a asp-action="EditPerson" asp-route-id="@Model.PersonId">Edit Person</a>
+                    <a asp-controller="Language" asp-action="AssignLanguage" asp-route-id="@Model.PersonId">Assign Language</a>
+           
+        @if(User.IsInRole("Admin"))
+        {
+            <div class="col-sm"><a asp-controller="Person" asp-action="Delete" asp-route-id="@Model.PersonId">Ta bort</a></div>
         <div></div>
+        }
+
 
     </div>
 </div>

@@ -4,9 +4,11 @@ using MVCBasics.Data;
 using System.Linq;
 using MVCBasics.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MVCBasics.Controllers
 {
+    
     public class LanguageController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -14,17 +16,22 @@ namespace MVCBasics.Controllers
         {
             _context = context;
         }
+
+        [Authorize(Roles = AccountTypes.Administrator)]
         public IActionResult Index()
         {
             var listOfLanguages = _context.Languages.Include("PersonLanguages.Person").ToList();
             return View(listOfLanguages);
         }
 
+        [Authorize(Roles = AccountTypes.Administrator)]
         public IActionResult CreateLanguage()
         {
             return View();
         }
+
         [HttpPost]
+        [Authorize(Roles = AccountTypes.Administrator)]
         public IActionResult CreateLanguage(Language language)
         {
 
@@ -34,6 +41,7 @@ namespace MVCBasics.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = AccountTypes.Administrator)]
         public IActionResult RemoveLanguage(int languageId)
         {
             var LanguageToRemove = _context.Languages.Where(l => l.LanguageId == languageId).Single();
@@ -45,6 +53,7 @@ namespace MVCBasics.Controllers
             }
             return RedirectToAction("Index");
         }
+
 
         public IActionResult AssignLanguage()
         {
@@ -61,7 +70,24 @@ namespace MVCBasics.Controllers
                 _context.PersonLanguages.Add(new PersonLanguage { PersonId = personId, LanguageId = languageId });
                 _context.SaveChanges();
             }
-            return RedirectToAction("Index");
+            if (User.IsInRole(AccountTypes.Administrator))
+            {
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Persons", "Person");
+        }
+        public IActionResult Unassign(int personId, int languageId)
+        {
+            var toUnassign = _context.PersonLanguages.Where(o => o.PersonId == personId).Where(o => o.LanguageId == languageId).Single();
+            _context.PersonLanguages.Remove(toUnassign);
+            _context.SaveChanges();
+            
+            if (User.IsInRole(AccountTypes.Administrator))
+            {
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Persons", "Person");
         }
 
     }

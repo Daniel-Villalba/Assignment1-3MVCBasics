@@ -65,6 +65,28 @@ namespace MVCBasics.Controllers
             }
         }
 
+       
+
+        public IActionResult EditPerson(int id)
+        {
+            ViewBag.Cities = new SelectList(_context.Cities, "Id", "Name");
+
+            var dbResult = _context.People.Where(p => p.PersonId == id).Single<Person>();
+            return View(dbResult);
+        }
+        [HttpPost]
+        public IActionResult EditPerson(Person person)
+        {
+            var ResultPerson = _context.People.Where(p => p.PersonId == person.PersonId).Single<Person>();
+            if (ResultPerson != null)
+            {
+                ResultPerson.Name = person.Name;
+                ResultPerson.PhoneNumber = person.PhoneNumber;
+                ResultPerson.PersonCityId = person.PersonCityId;
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Persons");
+        }
         public IActionResult Delete(int id)
         {
             Person.DeletePerson(id, _context);

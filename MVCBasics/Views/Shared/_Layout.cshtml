@@ -17,6 +17,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <partial name=_LoginPartial />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">About</a>
@@ -33,21 +34,36 @@
                         <li class="nav-item">
                            <a class="nav-link text-dark" asp-controller="GuessingGame" asp-action="GuessingGame">Guessing Game</a>
                         </li>
-                        <li class="nav-item">
-                           <a class="nav-link text-dark" asp-controller="Person" asp-action="Persons">Persons</a>
-                        </li>
-                        <li class="nav-item">
+                         <li class="nav-item">
                            <a class="nav-link text-dark" asp-controller="Ajax" asp-action="Index">Ajax</a>
                         </li>
-                        <li class="nav-item">
-                           <a class="nav-link text-dark" asp-controller="City" asp-action="Index">Cities</a>
-                        </li>
-                        <li class="nav-item">
-                           <a class="nav-link text-dark" asp-controller="Country" asp-action="Index">Countries</a>
-                        </li>
-                        <li class="nav-item">
-                           <a class="nav-link text-dark" asp-controller="Language" asp-action="Index">Languages</a>
-                        </li>
+                        @if(User.IsInRole(AccountTypes.Administrator) || User.IsInRole(AccountTypes.Standard))
+                        {
+                            <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Person" asp-action="Persons">Persons</a>
+                            </li>
+                        }
+                        @if (User.IsInRole(AccountTypes.Administrator))
+                        {
+                            <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="City" asp-action="Index">Cities</a>
+                            </li>
+
+                            <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Country" asp-action="Index">Countries</a>
+                            </li>
+
+                            <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Language" asp-action="Index">Languages</a>
+                            </li>
+
+                            <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Role" asp-action="Index">Role Manager</a>
+                            </li>
+                            
+                        }
+
+                        
                     </ul>
                 </div>
             </div>
@@ -64,5 +80,6 @@
             @DateTime.Now.ToString("yy-MM-dd") - Daniel Villalba
         </div>
     </footer>
+    @RenderSection("Scripts", required:false)
 </body>
 </html>

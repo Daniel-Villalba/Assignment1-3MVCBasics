@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MVCBasics.Data;
 using MVCBasics.Models;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MVCBasics.Controllers
 {
+    [Authorize(Roles = AccountTypes.Administrator)]
     public class CityController : Controller
     {
         
